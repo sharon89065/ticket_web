@@ -1,3 +1,4 @@
+/* reset  */
 *,
 *::after,
 *::before {
@@ -20,6 +21,8 @@ img {
 body {
   font-family: 'Microsoft JhengHei';
 }
+
+/* style */
 
 .addTicket-panel {
   -webkit-box-shadow: 0px 3px 6px #00000029;

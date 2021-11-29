@@ -26,11 +26,11 @@
             <div class="form-group">
                 <div class="addTicket-input">
                     <label for="ticketName">套票名稱</label>
-                    <input type="text" id="ticketName" placeholder="請填寫套票名稱" name="套票名稱"
+                    <input type="text" id="ticketName" placeholder="請填寫套票名稱" name="ticketName"
                         onchange="checkFormData(formsElemnt[0])" onblur="checkFormData(formsElemnt[0])">
                 </div>
                 <div class="alert-message ">
-                    <p id="ticketName-message" data-message="套票名稱" class="d-none">
+                    <p id="ticketName-message" data-message="ticketName" class="d-none">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>必填!</span>
                     </p>
@@ -39,11 +39,11 @@
             <div class="form-group">
                 <div class="addTicket-input">
                     <label for="ticketImgUrl">圖片網址</label>
-                    <input type="text" id="ticketImgUrl" placeholder="請填寫圖片網址" name="圖片網址"
+                    <input type="text" id="ticketImgUrl" placeholder="請填寫圖片網址" name="ticketImgUrl"
                         onchange="checkFormData(formsElemnt[1])" onblur="checkFormData(formsElemnt[1])">
                 </div>
                 <div class="alert-message ">
-                    <p id="ticketImgUrl-message" data-message="圖片網址" class="d-none">
+                    <p id="ticketImgUrl-message" data-message="ticketImgUrl" class="d-none">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>必填!</span>
                     </p>
@@ -52,7 +52,7 @@
             <div class="form-group">
                 <div class="addTicket-input">
                     <label for="ticketRegion">景點地區</label>
-                    <select id="ticketRegion" name="景點地區" onblur="checkFormData(formsElemnt[2])"
+                    <select id="ticketRegion" name="ticketRegion" onblur="checkFormData(formsElemnt[2])"
                         onchange="checkFormData(formsElemnt[2])">
                         <option value="" disabled selected hidden>請選擇景點地區</option>
                         <option value="台北">台北</option>
@@ -61,7 +61,7 @@
                     </select>
                 </div>
                 <div class="alert-message ">
-                    <p id="ticketRegion-message" data-message="景點地區" class="d-none">
+                    <p id="ticketRegion-message" data-message="ticketRegion" class="d-none">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>必填!</span>
                     </p>
@@ -70,11 +70,11 @@
             <div class="form-group">
                 <div class="addTicket-input">
                     <label for="ticketPrice">套票金額</label>
-                    <input type="number" id="ticketPrice" placeholder="請填寫套票金額" name="套票金額" min="0"
+                    <input type="number" id="ticketPrice" placeholder="請填寫套票金額" name="ticketPrice" min="0"
                         onblur="checkFormData(formsElemnt[3])" onchange="checkFormData(formsElemnt[3])">
                 </div>
                 <div class="alert-message ">
-                    <p id="ticketPrice-message" data-message="套票金額" class="d-none">
+                    <p id="ticketPrice-message" data-message="ticketPrice" class="d-none">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>必填!</span>
                     </p>
@@ -83,11 +83,11 @@
             <div class="form-group">
                 <div class="addTicket-input">
                     <label for="ticketNum">套票組數</label>
-                    <input type="number" id="ticketNum" placeholder="請填寫套票組數" name="套票組數" min="1"
+                    <input type="number" id="ticketNum" placeholder="請填寫套票組數" name="ticketNum" min="1"
                         onchange="checkFormData(formsElemnt[4])" onblur="checkFormData(formsElemnt[4])">
                 </div>
                 <div class="alert-message">
-                    <p id="ticketNum-message" data-message="套票組數" class="d-none">
+                    <p id="ticketNum-message" data-message="ticketNum" class="d-none">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>必填!</span>
                     </p>
@@ -96,11 +96,11 @@
             <div class="form-group">
                 <div class="addTicket-input">
                     <label for="ticketRate">套票星級</label>
-                    <input type="number" id="ticketRate" placeholder="請填寫套票星級" name="套票星級" min="1" max="10"
+                    <input type="number" id="ticketRate" placeholder="請填寫套票星級" name="ticketRate" min="1" max="10"
                         onchange="checkFormData(formsElemnt[5])" onblur="checkFormData(formsElemnt[5])">
                 </div>
                 <div class="alert-message">
-                    <p id="ticketRate-message" data-message="套票星級" class="d-none">
+                    <p id="ticketRate-message" data-message="ticketRate" class="d-none">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>必填!</span>
                     </p>
@@ -109,17 +109,17 @@
             <div class="form-group">
                 <div class="addTicket-input">
                     <label for="ticketDescription">套票描述</label>
-                    <textarea name="套票描述" id="ticketDescription" placeholder="請填寫套票描述 (限 100 字)"
+                    <textarea name="ticketDescription" id="ticketDescription" placeholder="請填寫套票描述 (限 100 字)"
                         onblur="checkFormData(formsElemnt[6])" onchange="checkFormData(formsElemnt[6])"></textarea>
                 </div>
                 <div class="alert-message">
-                    <p id="ticketDescription-message" data-message="套票描述" class="d-none">
+                    <p id="ticketDescription-message" data-message="ticketDescription" class="d-none">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>必填!</span>
                     </p>
                 </div>
             </div>
-            <input type="button" class="addTicket-btn btn" value="新增套票">
+            <input type="submit" class="addTicket-btn btn" value="新增套票">
         </form>
     </section>
     <section class="main-content">

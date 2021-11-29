@@ -58,6 +58,7 @@ axios
 function render(location) {
   const list = document.querySelector('.ticketCard-area');
   let str = '';
+
   const cacheData = data.filter((item) => {
     if (item.area == location) {
       return item;
@@ -105,41 +106,41 @@ function render(location) {
 }
 
 //選取元素
-const ticketName = document.querySelector('#ticketName');
-const ticketImgUrl = document.querySelector('#ticketImgUrl');
-const ticketRegion = document.querySelector('#ticketRegion');
-const ticketPrice = document.querySelector('#ticketPrice');
-const ticketNum = document.querySelector('#ticketNum');
-const ticketRate = document.querySelector('#ticketRate');
-const ticketDescription = document.querySelector('#ticketDescription');
-const addBtn = document.querySelector('.addTicket-btn');
+// const ticketName = document.querySelector('#ticketName');
+// const ticketImgUrl = document.querySelector('#ticketImgUrl');
+// const ticketRegion = document.querySelector('#ticketRegion');
+// const ticketPrice = document.querySelector('#ticketPrice');
+// const ticketNum = document.querySelector('#ticketNum');
+// const ticketRate = document.querySelector('#ticketRate');
+// const ticketDescription = document.querySelector('#ticketDescription');
+// const addBtn = document.querySelector('.addTicket-btn');
 const regionSearch = document.querySelector('.regionSearch');
+const ticketForm = document.querySelector('.addTicket-form');
 
-//新增資料
-addBtn.addEventListener('click', addData);
-
-function addData() {
-  let obj = {};
-  obj.id = Date.now();
-  obj.name = ticketName.value;
-  obj.imgUrl = ticketImgUrl.value;
-  obj.area = ticketRegion.value;
-  obj.description = ticketDescription.value;
-  obj.group = ticketNum.value;
-  obj.price = ticketPrice.value;
-  obj.rate = ticketRate.value;
-  data.push(obj);
-  const form = document.querySelector('.addTicket-form');
-  form.reset();
-  render();
-}
+// function addData() {
+//   console.log(`adddata`);
+//   let obj = {};
+//   obj.id = Date.now();
+//   obj.name = ticketName.value;
+//   obj.imgUrl = ticketImgUrl.value;
+//   obj.area = ticketRegion.value;
+//   obj.description = ticketDescription.value;
+//   obj.group = ticketNum.value;
+//   obj.price = ticketPrice.value;
+//   obj.rate = ticketRate.value;
+//   data.push(obj);
+//   const form = document.querySelector('.addTicket-form');
+//   form.reset();
+//   render();
+// }
 
 regionSearch.addEventListener('change', function () {
   render(regionSearch.value);
 });
 
-//*****表單驗證********//
+//*****表單驗證＋新增功能********//
 
+//**onblur和onchange就會驗證一次是否空值show出必填**/
 //選取document裡面的forms元素節點
 const formsElemnt = document.forms['addTicket-form'];
 //check每個傳入element的值，讓每個傳入驗證的節點為上面的formsElement陣列的元素
@@ -155,3 +156,58 @@ function checkFormData(element) {
   }
 }
 // checkFormData(formElemnt[0]);
+
+//** 用formData webAPI取值新稱and在驗證一次 **/
+//submit時又在驗證一次，可以才新增data
+ticketForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  console.log(`有觸發`);
+  const formData = new FormData(ticketForm);
+  const name = formData.get('ticketName');
+  const region = formData.get('ticketRegion');
+  const description = formData.get('ticketDescription');
+  const Num = formData.get('ticketNum');
+  const price = formData.get('ticketPrice');
+  const rate = formData.get('ticketRate');
+  const imgUrl = formData.get('ticketImgUrl');
+  //TODO 網址或檔案開頭路徑 ->可以再弄清楚一點正規表達式
+  const urlRegex = /(http|https|files):\/\/([[a-zA-Z0-9])?/gi;
+  if (!urlRegex.test(imgUrl)) {
+    alert(`僅接受網址及檔案路徑（ex:http or https or files:// ），請重新輸入`);
+    return;
+  }
+
+  if (rate > 10) {
+    alert('最大星級只有10');
+    return;
+  }
+  if (
+    name == '' ||
+    name == null ||
+    region == '' ||
+    region == null ||
+    Num == null ||
+    Num == '' ||
+    price == '' ||
+    price == null ||
+    description == '' ||
+    description == null
+  ) {
+    alert(`這欄位不能空白喔`);
+    return;
+  }
+
+  let obj = {
+    id: Date.now(),
+    name: name,
+    imgUrl: imgUrl,
+    area: region,
+    description: description,
+    group: Num,
+    price: price,
+    rate: rate,
+  };
+  data.push(obj);
+  ticketForm.reset();
+  render();
+});

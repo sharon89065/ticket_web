@@ -187,7 +187,7 @@ ticketForm.addEventListener('submit', (e) => {
     region == '' ||
     region == null ||
     Num == null ||
-    Num == '' ||
+    !Num == '' ||
     price == '' ||
     price == null ||
     description == '' ||

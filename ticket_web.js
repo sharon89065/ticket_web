@@ -1,11 +1,14 @@
-let data;
+let datas;
 axios
   .get(
     'https://raw.githubusercontent.com/hexschool/js-training/main/travelApi.json'
   )
   .then(function (response) {
-    data = response.data.data;
+    datas = response.data.data;
+    chartDataInit();
+    console.log(datas);
     render();
+    calculatorChartData(datas);
   })
   .catch(function (error) {
     if (error.response) {
@@ -17,50 +20,12 @@ axios
     }
   });
 
-// let data = [
-//   {
-//     id: 0,
-//     name: '肥宅心碎賞櫻3日',
-//     imgUrl:
-//       'https://images.unsplash.com/photo-1522383225653-ed111181a951?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1655&q=80',
-//     area: '高雄',
-//     description: '賞櫻花最佳去處。肥宅不得不去的超讚景點！',
-//     group: 87,
-//     price: 1400,
-//     rate: 10,
-//   },
-//   {
-//     id: 1,
-//     name: '貓空纜車雙程票',
-//     imgUrl:
-//       'https://images.unsplash.com/photo-1501393152198-34b240415948?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80',
-//     area: '台北',
-//     description:
-//       '乘坐以透明強化玻璃為地板的「貓纜之眼」水晶車廂，享受騰雲駕霧遨遊天際之感',
-//     group: 99,
-//     price: 240,
-//     rate: 2,
-//   },
-//   {
-//     id: 2,
-//     name: '台中谷關溫泉會1日',
-//     imgUrl:
-//       'https://images.unsplash.com/photo-1535530992830-e25d07cfa780?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80',
-//     area: '台中',
-//     description:
-//       '全館客房均提供谷關無色無味之優質碳酸原湯，並取用八仙山之山冷泉供蒞臨貴賓沐浴及飲水使用。',
-//     group: 20,
-//     price: 1765,
-//     rate: 7,
-//   },
-// ];
-
 function render(location) {
   const list = document.querySelector('.ticketCard-area');
   let str = '';
-
-  const cacheData = data.filter((item) => {
+  const cacheData = datas.filter((item) => {
     if (item.area == location) {
+      areaName = location;
       return item;
     }
     if (!location) {
@@ -101,38 +66,17 @@ function render(location) {
   </li>`;
   });
   searchResult_text.textContent = `本次搜尋共${cacheData.length}筆資料`;
+
   list.innerHTML = str;
   return;
 }
 
-//選取元素
-// const ticketName = document.querySelector('#ticketName');
-// const ticketImgUrl = document.querySelector('#ticketImgUrl');
-// const ticketRegion = document.querySelector('#ticketRegion');
-// const ticketPrice = document.querySelector('#ticketPrice');
-// const ticketNum = document.querySelector('#ticketNum');
-// const ticketRate = document.querySelector('#ticketRate');
-// const ticketDescription = document.querySelector('#ticketDescription');
-// const addBtn = document.querySelector('.addTicket-btn');
 const regionSearch = document.querySelector('.regionSearch');
+// BUG 選擇過城市後，新增套票無法重新變成全部區域selected
+//const regionSearchSelected = document.querySelector(
+//   '.regionSearch option[selected]'
+// );
 const ticketForm = document.querySelector('.addTicket-form');
-
-// function addData() {
-//   console.log(`adddata`);
-//   let obj = {};
-//   obj.id = Date.now();
-//   obj.name = ticketName.value;
-//   obj.imgUrl = ticketImgUrl.value;
-//   obj.area = ticketRegion.value;
-//   obj.description = ticketDescription.value;
-//   obj.group = ticketNum.value;
-//   obj.price = ticketPrice.value;
-//   obj.rate = ticketRate.value;
-//   data.push(obj);
-//   const form = document.querySelector('.addTicket-form');
-//   form.reset();
-//   render();
-// }
 
 regionSearch.addEventListener('change', function () {
   render(regionSearch.value);
@@ -176,7 +120,6 @@ ticketForm.addEventListener('submit', (e) => {
     alert(`僅接受網址及檔案路徑（ex:http or https or files:// ），請重新輸入`);
     return;
   }
-
   if (rate > 10) {
     alert('最大星級只有10');
     return;
@@ -207,7 +150,60 @@ ticketForm.addEventListener('submit', (e) => {
     price: price,
     rate: rate,
   };
-  data.push(obj);
+  datas.push(obj);
   ticketForm.reset();
   render();
+  calculatorChartData(datas);
 });
+
+/*****chart*****/
+const chartData = {
+  columns: [],
+  colors: {},
+};
+const chartDataInit = function () {
+  const cityNamelist = document.querySelectorAll('#ticketRegion > option');
+  console.log(cityNamelist);
+  cityNamelist.forEach((item) => {
+    if (item.value !== '') {
+      chartData.columns.push([item.value, 0]);
+      if (chartData.colors[item.value] !== '') {
+        chartData.colors[item.value] = `#${Math.floor(
+          Math.random() * 26777314
+        ).toString(16)}`;
+      }
+    }
+  });
+};
+
+const calculatorChartData = (data) => {
+  const areaData = {};
+  data.forEach((item) => {
+    if (!areaData[item.area]) {
+      areaData[item.area] = 0;
+    }
+    areaData[item.area]++;
+  });
+
+  chartData.columns.forEach((item) => {
+    item[1] = areaData[item[0]];
+  });
+
+  let chart = c3.generate({
+    //bindto: '#chart',
+    data: {
+      columns: chartData.columns,
+      type: 'donut',
+    },
+    donut: {
+      title: '套票地區比重',
+      label: {
+        show: false,
+      },
+      width: 30,
+    },
+
+    colors: chartData.colors,
+  });
+  c;
+};
